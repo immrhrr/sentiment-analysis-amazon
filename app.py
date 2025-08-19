@@ -1,9 +1,13 @@
-
 import re
 import joblib
 import streamlit as st
+import nltk  # Import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
+
+# Download necessary NLTK data
+nltk.download('wordnet')
+nltk.download('stopwords')
 
 # Load artifacts
 vectorizer = joblib.load('artifacts/tfidf_vectorizer.joblib')
