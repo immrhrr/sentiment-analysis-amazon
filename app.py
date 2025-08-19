@@ -1,24 +1,21 @@
 import streamlit as st
 import joblib
 
-# Load model and vectorizer
-model = joblib.load("sentiment_model.joblib")
+# Load the pre-trained vectorizer and model
 vectorizer = joblib.load("tfidf_vectorizer.joblib")
+model = joblib.load("sentiment_model.joblib")
 
-# Streamlit UI
-st.title("Amazon Alexa Sentiment Analysis")
-st.write("🔍 Classify Amazon Alexa reviews as **Positive** or **Negative**")
+st.title("Amazon Alexa Review Sentiment Analysis")
 
-# User input
-review = st.text_area("Enter a review:")
+# Get user input
+review = st.text_input("Enter your review:")
 
-if st.button("Predict Sentiment"):
-    if review.strip() == "":
-        st.warning("Please enter a review first!")
-    else:
-        # Transform input
-        review_tfidf = vectorizer.transform([review])
-        prediction = model.predict(review_tfidf)[0]
-
-        sentiment = "✅ Positive" if prediction == 1 else "❌ Negative"
-        st.success(f"Predicted Sentiment: {sentiment}")
+if review:
+    # Transform input using the already fitted vectorizer
+    review_tfidf = vectorizer.transform([review])
+    
+    # Predict sentiment
+    prediction = model.predict(review_tfidf)
+    
+    # Display result
+    st.write("Sentiment:", "Positive" if prediction[0] == 1 else "Negative")
